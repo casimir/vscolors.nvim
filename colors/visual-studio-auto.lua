@@ -14,6 +14,8 @@ local palette = {
   number       = { '#098658', '#B5CEA8' },
   regex        = { '#811F3F', '#D16969' },
   tag          = { '#800000', '#569CD6' },
+  tag_delim    = { '#800000', '#808080' },
+  raw          = { '#800000', '#CE9178' },
   attribute    = { '#E50000', '#9CDCFE' },
   key          = { '#0451A5', '#9CDCFE' },
   invalid      = { '#CD3131', '#F44747' },
@@ -24,6 +26,8 @@ local palette = {
   border       = { '#C8C8C8', '#454545' },
   selection    = { '#ADD6FF', '#264F78' },
   match        = { '#A8AC94', '#515C6A' },
+  find         = { '#F8C9AA', '#623314' }, -- #EA5C00 at 33% over bg
+  bracket      = { '#E5EFE5', '#1B251B' }, -- #006400 at 10% over bg
   linenr       = { '#237893', '#858585' },
   linenr_cur   = { '#0B216F', '#C6C6C6' },
   whitespace   = { '#D3D3D3', '#404040' },
@@ -32,8 +36,8 @@ local palette = {
   -- diagnostics
   error        = { '#E51400', '#F14C4C' },
   warn         = { '#BF8803', '#CCA700' },
-  info         = { '#1A85FF', '#3794FF' },
-  hint         = { '#6C6C6C', '#A6A6A6' },
+  info         = { '#0063D3', '#59A4F9' },
+  hint         = { '#6C6C6C', '#B0B0B0' },
   ok           = { '#388A34', '#89D185' },
   -- diff backgrounds
   diff_add     = { '#E2F1DB', '#2B3A22' },
@@ -49,7 +53,7 @@ local c = vim.tbl_map(function(pair) return pair[i] end, palette)
 local highlights = {
   -- :h highlight-groups
   ColorColumn    = { bg = c.line },
-  CurSearch      = { bg = c.selection },
+  CurSearch      = { bg = c.match },
   CursorColumn   = { bg = c.line },
   CursorLine     = { bg = c.line },
   CursorLineNr   = { fg = c.linenr_cur },
@@ -61,9 +65,9 @@ local highlights = {
   EndOfBuffer    = { fg = c.bg },
   ErrorMsg       = { fg = c.invalid },
   Folded         = { bg = c.line },
-  IncSearch      = { bg = c.selection },
+  IncSearch      = { bg = c.match },
   LineNr         = { fg = c.linenr },
-  MatchParen     = { bg = c.match },
+  MatchParen     = { bg = c.bracket },
   ModeMsg        = { fg = c.fg },
   MoreMsg        = { fg = c.fg },
   NonText        = { fg = c.whitespace },
@@ -73,7 +77,7 @@ local highlights = {
   Pmenu          = { fg = c.fg, bg = c.panel },
   PmenuSel       = { fg = c.status_fg, bg = c.panel_sel },
   Question       = { fg = c.keyword },
-  Search         = { bg = c.match },
+  Search         = { bg = c.find },
   SignColumn     = { fg = c.linenr },
   SpecialKey     = { fg = c.whitespace },
   SpellBad       = { undercurl = true, sp = c.error },
@@ -142,13 +146,13 @@ local highlights = {
   ['@markup.heading']      = { fg = c.tag, bold = true },
   ['@markup.italic']       = { italic = true },
   ['@markup.strong']       = { bold = true },
-  ['@markup.raw']          = { fg = c.tag },
+  ['@markup.raw']          = { fg = c.raw },
   ['@property.json']       = { fg = c.key },
   ['@property.yaml']       = { fg = c.key },
   ['@string.regexp']       = { fg = c.regex },
   ['@tag']                 = { fg = c.tag },
   ['@tag.attribute']       = { fg = c.attribute },
-  ['@tag.delimiter']       = { fg = c.tag },
+  ['@tag.delimiter']       = { fg = c.tag_delim },
 }
 
 -- stylua: ignore
@@ -177,19 +181,19 @@ local ansi = {
   -- light      dark
   { '#000000', '#000000' }, -- black
   { '#CD3131', '#CD3131' }, -- red
-  { '#00BC00', '#0DBC79' }, -- green
+  { '#107C10', '#0DBC79' }, -- green
   { '#949800', '#E5E510' }, -- yellow
   { '#0451A5', '#2472C8' }, -- blue
   { '#BC05BC', '#BC3FBC' }, -- magenta
   { '#0598BC', '#11A8CD' }, -- cyan
   { '#555555', '#E5E5E5' }, -- white
   { '#666666', '#666666' }, -- bright black
-  { '#CD3131', '#F14C4C' }, -- bright red
+  { '#F14C4C', '#F14C4C' }, -- bright red
   { '#14CE14', '#23D18B' }, -- bright green
   { '#B5BA00', '#F5F543' }, -- bright yellow
-  { '#0451A5', '#3B8EEA' }, -- bright blue
-  { '#BC05BC', '#D670D6' }, -- bright magenta
-  { '#0598BC', '#29B8DB' }, -- bright cyan
+  { '#3B8EEA', '#3B8EEA' }, -- bright blue
+  { '#D670D6', '#D670D6' }, -- bright magenta
+  { '#29B8DB', '#29B8DB' }, -- bright cyan
   { '#A5A5A5', '#E5E5E5' }, -- bright white
 }
 for n, pair in ipairs(ansi) do
